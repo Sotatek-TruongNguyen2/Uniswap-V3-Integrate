@@ -1,0 +1,2 @@
+export const CURRENT_CHAIN_ID = 4;
+export const MULTICALL_ADDRESS = "0x42ad527de7d4e9d9d011ac45b31d8551f8fe9821";
