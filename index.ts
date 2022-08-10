@@ -1,17 +1,22 @@
-import { Currency, CurrencyAmount, TradeType, Token, Percent } from "@uniswap/sdk-core";
+import { Currency, CurrencyAmount, TradeType, Token, Percent, NativeCurrency } from "@uniswap/sdk-core";
+import { ethers } from "ethers";
 import JSBI from 'jsbi'
+import { CURRENT_CHAIN_ID } from "./config";
 import { useClientSideV3Trade } from "./hooks/useClientSideV3Trade";
+import { nativeOnChain } from "./tokens";
 
 const main = async () => {
   const CGT = new Token(4, '0xA739e45E6aEDf91e1B4D92b0331162b603246982', 18, 'CGT', 'CGT');
   const WETH = new Token(4, '0xc778417e063141139fce010982780140aa0cd5ab', 18, 'WETH', 'Wrapped Ether');
   const DAI = new Token(4, '0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735', 18, 'DAI', 'Dai Stablecoin');
   const UNI = new Token(4, '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984', 18, 'UNI','Uniswap');
-  
-  const cgtAmount = CurrencyAmount.fromRawAmount(CGT, JSBI.BigInt('100000000000000000'));
-  const tradeType = TradeType.EXACT_INPUT;
+  const ETH = nativeOnChain(CURRENT_CHAIN_ID);
 
-  const bestTradeV3 = await useClientSideV3Trade(tradeType, cgtAmount, DAI);
+  const cgtAmount = CurrencyAmount.fromRawAmount(CGT, JSBI.BigInt('100000000000000000'));
+  const nativeAmount = CurrencyAmount.fromRawAmount(ETH, JSBI.BigInt('1000000000000000'));
+  const tradeType = TradeType.EXACT_OUTPUT;
+
+  const bestTradeV3 = await useClientSideV3Trade(tradeType, cgtAmount, ETH);
   
   const BIPS_BASE = JSBI.BigInt(10000)
   const ALLOWED_SLIPPAGE: Percent = new Percent(JSBI.BigInt(50), BIPS_BASE) // 0.5%
@@ -37,7 +42,7 @@ const main = async () => {
       poolFees: pools.map((pool: any) => pool.fee),
       priceImpact: priceImpact.toFixed(),
       // output/input amount after apply slippage tolerance 
-      amountAfterSlippage: tradeType == TradeType.EXACT_INPUT ? trade.minimumAmountOut(ALLOWED_SLIPPAGE, outputAmount).toFixed(): trade.maximumAmountIn(ALLOWED_SLIPPAGE, inputAmount).toFixed()
+      // amountAfterSlippage: tradeType == TradeType.EXACT_INPUT ? trade.minimumAmountOut(ALLOWED_SLIPPAGE, outputAmount).toFixed(): trade.maximumAmountIn(ALLOWED_SLIPPAGE, inputAmount).toFixed()
     }
 
     console.log(preparedSwapData);
