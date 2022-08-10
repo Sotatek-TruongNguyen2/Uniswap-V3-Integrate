@@ -14,12 +14,15 @@ const main = async () => {
 
   const cgtAmount = CurrencyAmount.fromRawAmount(CGT, JSBI.BigInt('100000000000000000'));
   const nativeAmount = CurrencyAmount.fromRawAmount(ETH, JSBI.BigInt('1000000000000000'));
-  const tradeType = TradeType.EXACT_OUTPUT;
+  const ourTradeType = TradeType.EXACT_OUTPUT;
 
-  const bestTradeV3 = await useClientSideV3Trade(tradeType, cgtAmount, ETH);
+  const bestTradeV3 = await useClientSideV3Trade(ourTradeType, cgtAmount, ETH);
   
-  const BIPS_BASE = JSBI.BigInt(10000)
-  const ALLOWED_SLIPPAGE: Percent = new Percent(JSBI.BigInt(50), BIPS_BASE) // 0.5%
+  const BIPS_BASE = JSBI.BigInt(10000);
+
+  const convertToPercent = (number: number) => {
+    const ALLOWED_SLIPPAGE: Percent = new Percent(JSBI.BigInt(number * 100), BIPS_BASE) // 0.5%
+  }
 
   if (bestTradeV3  && bestTradeV3.trade) {
     const trade = bestTradeV3.trade;
@@ -42,7 +45,7 @@ const main = async () => {
       poolFees: pools.map((pool: any) => pool.fee),
       priceImpact: priceImpact.toFixed(),
       // output/input amount after apply slippage tolerance 
-      // amountAfterSlippage: tradeType == TradeType.EXACT_INPUT ? trade.minimumAmountOut(ALLOWED_SLIPPAGE, outputAmount).toFixed(): trade.maximumAmountIn(ALLOWED_SLIPPAGE, inputAmount).toFixed()
+      // amountAfterSlippage: ourTradeType == TradeType.EXACT_INPUT ? trade.minimumAmountOut(ALLOWED_SLIPPAGE, outputAmount).toFixed(): trade.maximumAmountIn(ALLOWED_SLIPPAGE, inputAmount).toFixed()
     }
 
     console.log(preparedSwapData);
