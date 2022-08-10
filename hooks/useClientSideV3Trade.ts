@@ -153,7 +153,7 @@ export enum TradeState {
         amountOut: null,
       }
     );
-  
+
     if (!bestRoute || !amountIn || !amountOut) {
       return {
         state: TradeState.NO_ROUTE_FOUND,
