@@ -12,9 +12,11 @@ const main = async () => {
   const UNI = new Token(4, '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984', 18, 'UNI','Uniswap');
   const ETH = nativeOnChain(CURRENT_CHAIN_ID);
 
+  console.log(ETH);
+
   const cgtAmount = CurrencyAmount.fromRawAmount(CGT, JSBI.BigInt('100000000000000000'));
   const nativeAmount = CurrencyAmount.fromRawAmount(ETH, JSBI.BigInt('1000000000000000'));
-  const ourTradeType = TradeType.EXACT_OUTPUT;
+  const ourTradeType = TradeType.EXACT_INPUT;
 
   const bestTradeV3 = await useClientSideV3Trade(ourTradeType, cgtAmount, ETH);
   
