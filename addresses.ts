@@ -30,6 +30,7 @@ export const V3_CORE_FACTORY_ADDRESSES: AddressMap = {
     SupportedChainId.POLYGON_MUMBAI,
     SupportedChainId.POLYGON,
   ]),
+  [SupportedChainId.SEPOLIA]: "0x0227628f3F023bb0B980b67D528571c95c6DaC1c",
   [SupportedChainId.CELO]: CELO_V3_CORE_FACTORY_ADDRESSES,
   [SupportedChainId.CELO_ALFAJORES]: CELO_V3_CORE_FACTORY_ADDRESSES,
 }
@@ -43,6 +44,7 @@ export const V3_ROUTER_ADDRESS: AddressMap = {
     SupportedChainId.POLYGON,
     SupportedChainId.POLYGON_MUMBAI,
   ]),
+  [SupportedChainId.SEPOLIA]: "0x3bFA4769FB09eefC5a80d6E87c3B9C650f7Ae48E",
   [SupportedChainId.CELO]: CELO_V3_ROUTER_ADDRESS,
   [SupportedChainId.CELO_ALFAJORES]: CELO_V3_ROUTER_ADDRESS,
 }
@@ -65,6 +67,7 @@ export const MULTICALL_ADDRESS: AddressMap = {
     SupportedChainId.POLYGON_MUMBAI,
     SupportedChainId.POLYGON,
   ]),
+  [SupportedChainId.SEPOLIA]: '0xfed5c61afc0405065a991677159fb07f3b92a061',
   [SupportedChainId.ARBITRUM_ONE]: '0xadF885960B47eA2CD9B55E6DAc6B42b7Cb2806dB',
   [SupportedChainId.ARBITRUM_RINKEBY]: '0xa501c031958F579dB7676fF1CE78AD305794d579',
   [SupportedChainId.CELO]: CELO_MULTICALL_ADDRESS,
@@ -80,6 +83,7 @@ export const SWAP_ROUTER_ADDRESSES: AddressMap = {
     SupportedChainId.POLYGON,
     SupportedChainId.POLYGON_MUMBAI,
   ]),
+  [SupportedChainId.SEPOLIA]: "0x3bFA4769FB09eefC5a80d6E87c3B9C650f7Ae48E",
   [SupportedChainId.CELO]: CELO_V3_ROUTER_ADDRESS,
   [SupportedChainId.CELO_ALFAJORES]: CELO_V3_ROUTER_ADDRESS,
 }
@@ -122,6 +126,7 @@ export const QUOTER_ADDRESSES: AddressMap = {
     SupportedChainId.POLYGON_MUMBAI,
     SupportedChainId.POLYGON,
   ]),
+  [SupportedChainId.SEPOLIA]: "0xEd1f6473345F45b75F8179591dd5bA1888cf2FB3",
   [SupportedChainId.CELO]: CELO_QUOTER_ADDRESSES,
   [SupportedChainId.CELO_ALFAJORES]: CELO_QUOTER_ADDRESSES,
 }

@@ -67,6 +67,6 @@ export function useAllCurrencyCombinations(currencyA?: Currency, currencyB?: Cur
           })
         : []
     }
-  
+
     return deriveAllCurrencies(tokenA, tokenB, bases, basePairs, chainId);
   }

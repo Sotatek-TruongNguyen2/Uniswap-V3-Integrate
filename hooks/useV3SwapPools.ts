@@ -14,6 +14,8 @@ export async function useV3SwapPools(
 }> {
     const allCurrencyCombinations = useAllCurrencyCombinations(currencyIn, currencyOut)
 
+    console.log("allCurrencyCombinations: ", allCurrencyCombinations)
+    
     const getAllCurrencyCombinationsWithAllFees = (allCurrencyCombinations: [Token, Token][], chainId: number | undefined): [Token, Token, FeeAmount][] => {
         return allCurrencyCombinations.reduce<[Token, Token, FeeAmount][]>((list, [tokenA, tokenB]) => {
             return chainId === SupportedChainId.MAINNET
@@ -30,9 +32,12 @@ export async function useV3SwapPools(
                 ])
         }, []);
     }
-
+    
     const allCurrencyCombinationsWithAllFees = getAllCurrencyCombinationsWithAllFees(allCurrencyCombinations, CURRENT_CHAIN_ID);
+
     const pools = await usePools(allCurrencyCombinationsWithAllFees)
+
+    console.log("pools: ", pools);
 
     const getAllPools = (pools: [PoolState, Pool | null][]) => {
         return {

@@ -32,6 +32,13 @@ export const USDC_GOERLI = new Token(
   'USDC',
   'USD//C'
 )
+export const USDC_SEPOLIA = new Token(
+  SupportedChainId.SEPOLIA,
+  '0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238',
+  6,
+  'USDC',
+  'USD//C'
+)
 export const USDC_KOVAN = new Token(
   SupportedChainId.KOVAN,
   '0x31eeb2d0f9b6fd8642914ab10f4dd473677d80df',
@@ -134,6 +141,7 @@ export const USDC: { [chainId in SupportedChainId]: Token } = {
   [SupportedChainId.CELO]: PORTAL_USDC_CELO,
   [SupportedChainId.CELO_ALFAJORES]: USDC_CELO_ALFAJORES,
   [SupportedChainId.GOERLI]: USDC_GOERLI,
+  [SupportedChainId.SEPOLIA]: USDC_SEPOLIA,
   [SupportedChainId.RINKEBY]: USDC_RINKEBY,
   [SupportedChainId.KOVAN]: USDC_KOVAN,
   [SupportedChainId.ROPSTEN]: USDC_ROPSTEN,

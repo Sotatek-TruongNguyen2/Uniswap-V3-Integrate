@@ -107,7 +107,8 @@ export async function usePools(
     }
 
     const poolAddresses = getPoolAddresses(CURRENT_CHAIN_ID, poolTokens);
-    const web3Provider = new ethers.providers.JsonRpcProvider('https://rinkeby.infura.io/v3/d0151169c69948a884ef91d59c96c1d9')
+    console.log("poolAddress: ", poolAddresses);
+    const web3Provider = new ethers.providers.JsonRpcProvider('https://sepolia.infura.io/v3/fc9e3df5e54f41968f36d42f4068c255')
     const multiCall = new ethers.Contract(MULTICALL_ADDRESS, MulticallABI, web3Provider);
 
     const callDatas = poolAddresses.map(poolAddress => ({
@@ -121,6 +122,7 @@ export async function usePools(
     }));
 
     const multiResults = await multiCall.aggregate(callDatas);
+    
     const decodedResults = multiResults.returnData.map((result: any) => { return { 
         result: result == "0x" ? undefined : POOL_STATE_INTERFACE.decodeFunctionResult("slot0", result),
         valid: result != "0x"
@@ -132,8 +134,9 @@ export async function usePools(
         valid: result != "0x"
     }});
 
-    // console.log(liquidityDecodedResults);
-    // console.log(decodedResults);
+
+    console.log("123: ", liquidityDecodedResults);
+    console.log(decodedResults);
 
     const getAllPools = (
         liquidities: any, 
@@ -163,6 +166,7 @@ export async function usePools(
             }
         })
     }
+
 
     return getAllPools(liquidityDecodedResults, decodedResults, poolKeys, poolTokens);
 }

@@ -6,9 +6,9 @@ import { CURRENT_CHAIN_ID } from '../config'
 import useSendSwapTransaction from './useSendSwapTransaction'
 import { AnyTrade, SignatureData, useSwapCallArguments } from './useSwapCallArguments'
 
-const privateKey = Buffer.from("54516da687bfa7ba7c115d3ed3155a099e0b40f89560a9e3dfb4d34ab1d61579", "hex")
-const CURRENT_USER = "0x73964F6F211D5a8428322EDFbDfEc72FF76D9fCd";
-const web3Provider = new ethers.providers.JsonRpcProvider('https://rinkeby.infura.io/v3/d0151169c69948a884ef91d59c96c1d9')
+const privateKey = Buffer.from("345084502b2d36ea542d0e68ebd682ebf92dddfcafbe597efead47d1949b8afd", "hex")
+const CURRENT_USER = "0xd6F8595B0a1808dA9b529Da525F1101716618D1A";
+const web3Provider = new ethers.providers.JsonRpcProvider('https://sepolia.infura.io/v3/fc9e3df5e54f41968f36d42f4068c255')
 const wallet = new ethers.Wallet(privateKey, web3Provider);
 
 export enum SwapCallbackState {

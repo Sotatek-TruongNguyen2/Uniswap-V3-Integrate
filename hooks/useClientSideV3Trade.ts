@@ -16,7 +16,7 @@ import MulticallABI from '../abi/multicall.json';
 
 const { abi: QuoterV2ABI } = QuoterJson
 
-const web3Provider = new ethers.providers.JsonRpcProvider('https://rinkeby.infura.io/v3/d0151169c69948a884ef91d59c96c1d9')
+const web3Provider = new ethers.providers.JsonRpcProvider('https://sepolia.infura.io/v3/fc9e3df5e54f41968f36d42f4068c255')
 
 export enum TradeState {
     LOADING,
@@ -60,16 +60,25 @@ export enum TradeState {
     amountSpecified?: CurrencyAmount<Currency>,
     otherCurrency?: Currency
   ): Promise<{ state: TradeState; trade: InterfaceTrade<Currency, Currency, TTradeType> | undefined }> {
+    
+
     const [currencyIn, currencyOut] =
       tradeType === TradeType.EXACT_INPUT
         ? [amountSpecified?.currency, otherCurrency]
         : [otherCurrency, amountSpecified?.currency]
+
+
+    
+
+    // console.log('currency in: ', currencyIn);
+    // console.log('currency out: ', currencyOut);
+
     const { routes, loading: routesLoading } = await useAllV3Routes(currencyIn, currencyOut)
-  
+    
     // Chains deployed using the deploy-v3 script only deploy QuoterV2.
     const quoter = useQuoter(web3Provider, undefined) as Contract;
     const quoterAddress = QUOTER_ADDRESSES[CURRENT_CHAIN_ID];
-  
+    
     const getCallData = () => {
       return amountSpecified
         ? routes.map(
@@ -85,7 +94,11 @@ export enum TradeState {
   
     const multiCall = new ethers.Contract(MULTICALL_ADDRESS, MulticallABI, web3Provider);
     const callDatas = getCallData();
+    console.log("callDatas: ", callDatas);
     let quotesResults = await multiCall.aggregate(callDatas);
+
+    console.log("quotesResults: ", quotesResults);
+
     quotesResults = quotesResults.returnData.map((result: any) => {
       return {
         data: result == "0x" ? undefined : result,
