@@ -9,13 +9,16 @@ export async function useV3SwapPools(
     currencyIn?: Currency,
     currencyOut?: Currency
 ): Promise<{
-    pools: Pool[]
-    loading: boolean
+    pools: Pool[];
+    loading: boolean;
 }> {
-    const allCurrencyCombinations = useAllCurrencyCombinations(currencyIn, currencyOut)
+    const allCurrencyCombinations = useAllCurrencyCombinations(
+        currencyIn,
+        currencyOut
+    );
 
     console.log("allCurrencyCombinations: ", allCurrencyCombinations)
-    
+
     const getAllCurrencyCombinationsWithAllFees = (allCurrencyCombinations: [Token, Token][], chainId: number | undefined): [Token, Token, FeeAmount][] => {
         return allCurrencyCombinations.reduce<[Token, Token, FeeAmount][]>((list, [tokenA, tokenB]) => {
             return chainId === SupportedChainId.MAINNET
@@ -32,7 +35,7 @@ export async function useV3SwapPools(
                 ])
         }, []);
     }
-    
+
     const allCurrencyCombinationsWithAllFees = getAllCurrencyCombinationsWithAllFees(allCurrencyCombinations, CURRENT_CHAIN_ID);
 
     const pools = await usePools(allCurrencyCombinationsWithAllFees)
@@ -41,13 +44,12 @@ export async function useV3SwapPools(
         return {
             pools: pools
                 .filter((tuple): tuple is [PoolState.EXISTS, Pool] => {
-                    return tuple[0] === PoolState.EXISTS && tuple[1] !== null
+                    return tuple[0] === PoolState.EXISTS && tuple[1] !== null;
                 })
                 .map(([, pool]) => pool),
             loading: pools.some(([state]) => state === PoolState.LOADING),
-        }
-    }
+        };
+    };
 
     return getAllPools(pools);
 }
-

@@ -1,6 +1,15 @@
-import { CurrencyAmount, TradeType, Token, Percent } from "@uniswap/sdk-core";
-import JSBI from 'jsbi'
-import { BigNumber } from '@ethersproject/bignumber'
+import "dotenv/config";
+import {
+  Currency,
+  CurrencyAmount,
+  TradeType,
+  Token,
+  Percent,
+  NativeCurrency,
+} from "@uniswap/sdk-core";
+import { ethers } from "ethers";
+import JSBI from "jsbi";
+import { CURRENT_CHAIN_ID } from "./config";
 import { useClientSideV3Trade } from "./hooks/useClientSideV3Trade";
 import { useSwapCallback } from "./swap/useSwapCallback";
 import { SwapRouter, SwapOptions } from '@uniswap/v3-sdk';
@@ -13,7 +22,7 @@ const CHAIN_ID = 11155111;
 
 const main = async () => {
   const WETH = new Token(CHAIN_ID, '0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14', 18, 'WETH', 'Wrapped Ether');
-  const UNI = new Token(CHAIN_ID, '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984', 18, 'UNI','Uniswap');
+  const UNI = new Token(CHAIN_ID, '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984', 18, 'UNI', 'Uniswap');
 
   const cgtAmount = CurrencyAmount.fromRawAmount(UNI, JSBI.BigInt('1000000000000000'));
 
@@ -53,7 +62,6 @@ const main = async () => {
   //   CURRENT_USER,
   //   undefined
   // );
-
 }
 
 main();
