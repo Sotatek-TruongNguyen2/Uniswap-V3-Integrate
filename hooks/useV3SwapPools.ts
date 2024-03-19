@@ -37,8 +37,6 @@ export async function useV3SwapPools(
 
     const pools = await usePools(allCurrencyCombinationsWithAllFees)
 
-    console.log("pools: ", pools);
-
     const getAllPools = (pools: [PoolState, Pool | null][]) => {
         return {
             pools: pools

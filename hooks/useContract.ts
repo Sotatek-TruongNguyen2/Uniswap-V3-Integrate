@@ -2,7 +2,7 @@ import { Contract } from '@ethersproject/contracts'
 import { AddressZero } from '@ethersproject/constants'
 import { JsonRpcProvider, JsonRpcSigner } from '@ethersproject/providers'
 import { getAddress } from '@ethersproject/address'
-import QuoterJson from '@uniswap/v3-periphery/artifacts/contracts/lens/Quoter.sol/Quoter.json'
+import QuoterJson from '@uniswap/v3-periphery/artifacts/contracts/lens/QuoterV2.sol/QuoterV2.json'
 import { CURRENT_CHAIN_ID } from '../config'
 import { QUOTER_ADDRESSES } from '../addresses'
 

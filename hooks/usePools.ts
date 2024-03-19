@@ -107,7 +107,6 @@ export async function usePools(
     }
 
     const poolAddresses = getPoolAddresses(CURRENT_CHAIN_ID, poolTokens);
-    console.log("poolAddress: ", poolAddresses);
     const web3Provider = new ethers.providers.JsonRpcProvider('https://sepolia.infura.io/v3/fc9e3df5e54f41968f36d42f4068c255')
     const multiCall = new ethers.Contract(MULTICALL_ADDRESS, MulticallABI, web3Provider);
 
@@ -134,9 +133,6 @@ export async function usePools(
         valid: result != "0x"
     }});
 
-
-    console.log("123: ", liquidityDecodedResults);
-    console.log(decodedResults);
 
     const getAllPools = (
         liquidities: any, 

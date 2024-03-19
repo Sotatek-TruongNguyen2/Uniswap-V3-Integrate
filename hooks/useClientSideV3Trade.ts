@@ -10,7 +10,7 @@ import { useAllV3Routes } from "./useAllV3Routes";
 import { useQuoter } from "./useContract";
 import { QUOTER_ADDRESSES } from "../addresses";
 import { CURRENT_CHAIN_ID, MULTICALL_ADDRESS } from "../config";
-import QuoterJson from '@uniswap/v3-periphery/artifacts/contracts/lens/Quoter.sol/Quoter.json'
+import QuoterJson from '@uniswap/v3-periphery/artifacts/contracts/lens/QuoterV2.sol/QuoterV2.json'
 import { toCallState } from "../utils/callState"
 import MulticallABI from '../abi/multicall.json';
 
@@ -84,7 +84,7 @@ export enum TradeState {
         ? routes.map(
           (route) => {
             return {
-              callData: SwapQuoter.quoteCallParameters(route, amountSpecified, tradeType, { useQuoterV2: false }).calldata,
+              callData: SwapQuoter.quoteCallParameters(route, amountSpecified, tradeType, { useQuoterV2: true }).calldata,
               target: quoterAddress
             }
           }
