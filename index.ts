@@ -29,8 +29,6 @@ const main = async () => {
   const WETH = new Token(CHAIN_ID, '0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14', 18, 'WETH', 'Wrapped Ether');
   const UNI = new Token(CHAIN_ID, '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984', 18, 'UNI', 'Uniswap');
 
-
-  console.log("ETH: ", ETH);
   const cgtAmount = CurrencyAmount.fromRawAmount(ETH, JSBI.BigInt('10000000000000000'));
 
   const options: SwapOptions = {
@@ -66,12 +64,12 @@ const main = async () => {
   // const response = await signer.sendTransaction(tx);
   // console.log(response);
 
-  // const swapCalls = await useSwapCallback(
-  //   bestTradeV3.trade,
-  //   ALLOWED_PRICE_IMPACT_LOW,
-  //   CURRENT_USER,
-  //   undefined
-  // );
+  const swapCalls = await useSwapCallback(
+    bestTradeV3.trade,
+    ALLOWED_PRICE_IMPACT_LOW,
+    CURRENT_USER,
+    undefined
+  );
 }
 
 main();

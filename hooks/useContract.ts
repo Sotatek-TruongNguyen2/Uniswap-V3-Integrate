@@ -29,12 +29,12 @@ export function getContract(address: string, ABI: any, provider: JsonRpcProvider
 // account is not optional
 function getSigner(provider: JsonRpcProvider, account: string): JsonRpcSigner {
     return provider.getSigner(account).connectUnchecked()
-  }
-  
-  // account is optional
-  function getProviderOrSigner(provider: JsonRpcProvider, account?: string): JsonRpcProvider | JsonRpcSigner {
+}
+
+// account is optional
+function getProviderOrSigner(provider: JsonRpcProvider, account?: string): JsonRpcProvider | JsonRpcSigner {
     return account ? getSigner(provider, account) : provider
-  }
+}
 
 
 export function useContract<T extends Contract = Contract>(

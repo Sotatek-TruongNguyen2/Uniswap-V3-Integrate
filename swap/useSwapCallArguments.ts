@@ -98,6 +98,8 @@ export function useSwapCallArguments(
             deadlineOrPreviousBlockhash: deadline.toString(),
         })
 
+    console.log("value 123123123: ", value);
+
     return [
         {
             address: swapRouterAddress,
