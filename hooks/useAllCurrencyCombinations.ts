@@ -43,7 +43,6 @@ export function useAllCurrencyCombinations(
   };
 
   const basePairs = findBasePairs(bases);
-  console.log(basePairs);
   const deriveAllCurrencies = (
     tokenA: Token | undefined,
     tokenB: Token | undefined,

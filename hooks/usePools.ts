@@ -129,29 +129,32 @@ export async function usePools(
     );
   };
 
-    const poolAddresses = getPoolAddresses(CURRENT_CHAIN_ID, poolTokens);
-    const web3Provider = new ethers.providers.JsonRpcProvider('https://sepolia.infura.io/v3/fc9e3df5e54f41968f36d42f4068c255')
-    const multiCall = new ethers.Contract(MULTICALL_ADDRESS, MulticallABI, web3Provider);
+  const poolAddresses = getPoolAddresses(CURRENT_CHAIN_ID, poolTokens);
+  const web3Provider = new ethers.providers.JsonRpcProvider('https://sepolia.infura.io/v3/fc9e3df5e54f41968f36d42f4068c255')
+  const multiCall = new ethers.Contract(MULTICALL_ADDRESS, MulticallABI, web3Provider);
 
-
-  console.log(MULTICALL_ADDRESS);
+  console.log("poolAddresses: ", poolAddresses);
 
   const callDatas = poolAddresses.map((poolAddress) => ({
     target: poolAddress,
     callData: POOL_STATE_INTERFACE.encodeFunctionData("slot0"),
   }));
 
+  console.log("callDatas: A", callDatas);
+
   const liquidityCallDatas = poolAddresses.map((poolAddress) => ({
     target: poolAddress,
     callData: POOL_STATE_INTERFACE.encodeFunctionData("liquidity"),
   }));
 
-    const multiResults = await multiCall.aggregate(callDatas);
-    
-    const decodedResults = multiResults.returnData.map((result: any) => { return { 
-        result: result == "0x" ? undefined : POOL_STATE_INTERFACE.decodeFunctionResult("slot0", result),
-        valid: result != "0x"
-    }});  
+  const multiResults = await multiCall.aggregate(callDatas);
+
+  const decodedResults = multiResults.returnData.map((result: any) => {
+    return {
+      result: result == "0x" ? undefined : POOL_STATE_INTERFACE.decodeFunctionResult("slot0", result),
+      valid: result != "0x"
+    }
+  });
 
   const liquidityMultiResults = await multiCall.aggregate(liquidityCallDatas);
   const liquidityDecodedResults = liquidityMultiResults.returnData.map(
@@ -169,37 +172,37 @@ export async function usePools(
   // console.log(liquidityDecodedResults);
   // console.log(decodedResults);
 
-    const getAllPools = (
-        liquidities: any, 
-        slot0s: any, 
-        poolKeys: [Currency | undefined, Currency | undefined, FeeAmount | undefined][], 
-        poolTokens: ([Token, Token, FeeAmount] | undefined)[]
-    ): [PoolState, Pool | null][] => {
-        return poolKeys.map((_key, index) => {
-            const tokens = poolTokens[index]
-            if (!tokens) return [PoolState.INVALID, null]
-            const [token0, token1, fee] = tokens
-            if (!slot0s[index]) return [PoolState.INVALID, null]
-            const { result: slot0, valid: slot0Valid } = slot0s[index]
+  const getAllPools = (
+    liquidities: any,
+    slot0s: any,
+    poolKeys: [Currency | undefined, Currency | undefined, FeeAmount | undefined][],
+    poolTokens: ([Token, Token, FeeAmount] | undefined)[]
+  ): [PoolState, Pool | null][] => {
+    return poolKeys.map((_key, index) => {
+      const tokens = poolTokens[index]
+      if (!tokens) return [PoolState.INVALID, null]
+      const [token0, token1, fee] = tokens
+      if (!slot0s[index]) return [PoolState.INVALID, null]
+      const { result: slot0, valid: slot0Valid } = slot0s[index]
 
-            if (!liquidities[index]) return [PoolState.INVALID, null]
-            const { result: liquidity, valid: liquidityValid } = liquidities[index]
-            if (!tokens || !slot0Valid || !liquidityValid) return [PoolState.INVALID, null]
-            if (!slot0 || !liquidity) return [PoolState.NOT_EXISTS, null]
-            if (!slot0.sqrtPriceX96 || slot0.sqrtPriceX96.eq(0)) return [PoolState.NOT_EXISTS, null]
+      if (!liquidities[index]) return [PoolState.INVALID, null]
+      const { result: liquidity, valid: liquidityValid } = liquidities[index]
+      if (!tokens || !slot0Valid || !liquidityValid) return [PoolState.INVALID, null]
+      if (!slot0 || !liquidity) return [PoolState.NOT_EXISTS, null]
+      if (!slot0.sqrtPriceX96 || slot0.sqrtPriceX96.eq(0)) return [PoolState.NOT_EXISTS, null]
 
-            try {
-                const pool = PoolCache.getPool(token0, token1, fee, slot0.sqrtPriceX96, liquidity[0], slot0.tick)
-                return [PoolState.EXISTS, pool]
-            } catch (error) {
-                console.error('Error when constructing the pool', error)
-                return [PoolState.NOT_EXISTS, null]
-            }
-        })
-    }
+      try {
+        const pool = PoolCache.getPool(token0, token1, fee, slot0.sqrtPriceX96, liquidity[0], slot0.tick)
+        return [PoolState.EXISTS, pool]
+      } catch (error) {
+        console.error('Error when constructing the pool', error)
+        return [PoolState.NOT_EXISTS, null]
+      }
+    })
+  }
 
 
-    return getAllPools(liquidityDecodedResults, decodedResults, poolKeys, poolTokens);
+  return getAllPools(liquidityDecodedResults, decodedResults, poolKeys, poolTokens);
 }
 
 // export function usePool(

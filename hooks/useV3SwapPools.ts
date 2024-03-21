@@ -17,7 +17,7 @@ export async function useV3SwapPools(
         currencyOut
     );
 
-    console.log("allCurrencyCombinations: ", allCurrencyCombinations)
+    // console.log("allCurrencyCombinations: ", allCurrencyCombinations)
 
     const getAllCurrencyCombinationsWithAllFees = (allCurrencyCombinations: [Token, Token][], chainId: number | undefined): [Token, Token, FeeAmount][] => {
         return allCurrencyCombinations.reduce<[Token, Token, FeeAmount][]>((list, [tokenA, tokenB]) => {
@@ -37,6 +37,8 @@ export async function useV3SwapPools(
     }
 
     const allCurrencyCombinationsWithAllFees = getAllCurrencyCombinationsWithAllFees(allCurrencyCombinations, CURRENT_CHAIN_ID);
+
+    // console.log("allCurrencyCombinationsWithAllFees: ", allCurrencyCombinationsWithAllFees);
 
     const pools = await usePools(allCurrencyCombinationsWithAllFees)
 

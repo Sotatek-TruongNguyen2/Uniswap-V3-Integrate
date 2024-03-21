@@ -60,7 +60,17 @@ export async function useAllV3Routes(
     currencyOut?: Currency
   ): Promise<{ loading: boolean; routes: Route<Currency, Currency>[] }> {
     const { pools } = await useV3SwapPools(currencyIn, currencyOut)
+
     console.log("pools: ", pools);
+
+    console.log("currencyIn: ", currencyIn);
+
+    console.log("currencyOut: ", currencyOut);
+
+    // console.log("pools Price: ", pools[0].token0Price.toSignificant(18));
+
+    // console.log("pools Price 0: ", pools[0].token0Price);
+
     const getAllRoutes = () => {
       if (!CURRENT_CHAIN_ID || !pools || !currencyIn || !currencyOut) return { loading: true, routes: [] }
   

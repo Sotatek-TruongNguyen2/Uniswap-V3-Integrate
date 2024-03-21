@@ -66,8 +66,6 @@ export enum TradeState {
       tradeType === TradeType.EXACT_INPUT
         ? [amountSpecified?.currency, otherCurrency]
         : [otherCurrency, amountSpecified?.currency]
-
-
     
 
     // console.log('currency in: ', currencyIn);
@@ -75,9 +73,14 @@ export enum TradeState {
 
     const { routes, loading: routesLoading } = await useAllV3Routes(currencyIn, currencyOut)
     
+
+    console.log("routes: ", routes);
+
     // Chains deployed using the deploy-v3 script only deploy QuoterV2.
     const quoter = useQuoter(web3Provider, undefined) as Contract;
     const quoterAddress = QUOTER_ADDRESSES[CURRENT_CHAIN_ID];
+
+    console.log("quoterAddress: ", quoterAddress)
     
     const getCallData = () => {
       return amountSpecified
