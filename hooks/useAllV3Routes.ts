@@ -67,7 +67,9 @@ export async function useAllV3Routes(
 
     console.log("currencyOut: ", currencyOut);
 
-    // console.log("pools Price: ", pools[0].token0Price.toSignificant(18));
+    console.log("FLZ Price: ", pools[0].token0Price.toSignificant(18));
+
+    console.log("ETH Price: ", pools[0].token1Price.toSignificant(18));
 
     // console.log("pools Price 0: ", pools[0].token0Price);
 

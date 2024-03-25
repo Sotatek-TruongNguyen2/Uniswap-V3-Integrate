@@ -5,6 +5,7 @@ import {
   TradeType,
   Token,
   Percent,
+  Price
 } from "@uniswap/sdk-core";
 import { ethers } from "ethers";
 import JSBI from "jsbi";
@@ -28,8 +29,11 @@ const main = async () => {
 
   const WETH = new Token(CHAIN_ID, '0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14', 18, 'WETH', 'Wrapped Ether');
   const UNI = new Token(CHAIN_ID, '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984', 18, 'UNI', 'Uniswap');
+  const FLZ = new Token(CHAIN_ID, '0xEB111Ca8eB9C1F24F3E17cdb5FAe1F7d70061BE2', 18, 'FLZ', 'Fellaz');
 
-  const cgtAmount = CurrencyAmount.fromRawAmount(ETH, JSBI.BigInt('10000000000000000'));
+  // const cgtAmount = CurrencyAmount.fromRawAmount(ETH, JSBI.BigInt('10000000000000000'));
+  const cgtAmount = CurrencyAmount.fromRawAmount(ETH, JSBI.BigInt('10000000000000000000'));
+  // const cgtAmount = CurrencyAmount.fromRawAmount(FLZ, JSBI.BigInt('100000000000000'));
 
   const options: SwapOptions = {
     slippageTolerance: new Percent(50, 10_000), // 50 bips, or 0.50%
@@ -45,11 +49,27 @@ const main = async () => {
   const ALLOWED_PRICE_IMPACT_LOW: Percent = new Percent(JSBI.BigInt(100), BIPS_BASE) // 1%
 
   console.log(bestTradeV3.trade?.routes[0].path);
-  console.log("Best Trade: ", bestTradeV3);
+  console.log("Best Trade: ", bestTradeV3.trade.swaps[0].route.pools[0]);
 
   //@ts-ignore
   const methodParameters = SwapRouter.swapCallParameters([bestTradeV3.trade], options);
   console.log("methodParameters: ", methodParameters);
+
+
+  const { inputAmount, outputAmount } = bestTradeV3.trade.swaps[0];
+
+  const showInverted = false;
+
+  const executionPrice = new Price(
+    inputAmount.currency,
+    outputAmount.currency,
+    inputAmount.quotient,
+    outputAmount.quotient
+  );
+
+  const { baseCurrency, quoteCurrency } = executionPrice;
+
+  console.log("executionPrice: ", baseCurrency, quoteCurrency, executionPrice.invert().toSignificant(6));
 
   
   // const tx = {
@@ -64,12 +84,12 @@ const main = async () => {
   // const response = await signer.sendTransaction(tx);
   // console.log(response);
 
-  const swapCalls = await useSwapCallback(
-    bestTradeV3.trade,
-    ALLOWED_PRICE_IMPACT_LOW,
-    CURRENT_USER,
-    undefined
-  );
+  // const swapCalls = await useSwapCallback(
+  //   bestTradeV3.trade,
+  //   ALLOWED_PRICE_IMPACT_LOW,
+  //   CURRENT_USER,
+  //   undefined
+  // );
 }
 
 main();
